@@ -5,11 +5,9 @@ module.exports = {
     node: true
   },
   extends: 'standard',
-  overrides: [
-  ],
+  overrides: [],
   parserOptions: {
     ecmaVersion: 'latest'
   },
-  rules: {
-  }
+  rules: {}
 }

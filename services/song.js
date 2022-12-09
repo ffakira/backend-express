@@ -39,7 +39,8 @@ module.exports = (app, client) => {
 
   app.post('/songs', async (req, res) => {
     const { title, userId, lyricId } = req.body
-    const query = 'INSERT INTO song_table (title, user_id, lyric_id) VALUES ($1, $2, $3)'
+    const query =
+      'INSERT INTO song_table (title, user_id, lyric_id) VALUES ($1, $2, $3)'
     const values = [title || null, +userId || null, +lyricId || null]
 
     try {
@@ -60,8 +61,10 @@ module.exports = (app, client) => {
 
   app.patch('/song/:id', async (req, res) => {
     const { title, userId, lyricId } = req.body
-    const querySongId = 'SELECT id, title, user_id, lyric_id FROM song_table WHERE id = $1'
-    const queryUpdateSong = 'UPDATE song_table SET title = $2, user_id = $3, lyric_id = $4, updated_at = NOW() WHERE id = $1'
+    const querySongId =
+      'SELECT id, title, user_id, lyric_id FROM song_table WHERE id = $1'
+    const queryUpdateSong =
+      'UPDATE song_table SET title = $2, user_id = $3, lyric_id = $4, updated_at = NOW() WHERE id = $1'
 
     try {
       const respSongId = await client.query(querySongId, [req.params.id])
@@ -84,7 +87,6 @@ module.exports = (app, client) => {
             title: title || respSongId.rows[0].title,
             userId: userId || respSongId.rows[0].user_id,
             lyricId: lyricId || respSongId.rows[0].lyric_id
-
           }
         })
       }

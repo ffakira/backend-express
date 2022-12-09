@@ -6,19 +6,17 @@ const {
 } = require('graphql')
 const axios = require('axios')
 
-const {
-  SongType,
-  LyricType
-} = require('./types')
+const { SongType, LyricType } = require('./types')
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: () => ({
     songs: {
       type: new GraphQLList(SongType),
-      resolve () {
-        return axios.get('http://localhost:4000/songs')
-          .then(res => res.data.data)
+      resolve() {
+        return axios
+          .get('http://localhost:4000/songs')
+          .then((res) => res.data.data)
       }
     },
     song: {
@@ -28,9 +26,10 @@ const RootQuery = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLID)
         }
       },
-      resolve (_, { id }) {
-        return axios.get(`http://localhost:4000/song/${id}`)
-          .then(res => res.data.data)
+      resolve(_, { id }) {
+        return axios
+          .get(`http://localhost:4000/song/${id}`)
+          .then((res) => res.data.data)
       }
     },
     lyric: {
@@ -40,9 +39,10 @@ const RootQuery = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLID)
         }
       },
-      resolve (_, { id }) {
-        return axios.get(`http://localhost:4000/lyric/${id}`)
-          .then(res => res.data.data)
+      resolve(_, { id }) {
+        return axios
+          .get(`http://localhost:4000/lyric/${id}`)
+          .then((res) => res.data.data)
       }
     }
   })

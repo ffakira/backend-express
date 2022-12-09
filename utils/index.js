@@ -1,4 +1,4 @@
-function resError (res, err) {
+function resError(res, err) {
   console.error('[error]:', err)
   res.status(500).json({
     status: 500,
@@ -6,7 +6,7 @@ function resError (res, err) {
   })
 }
 
-function resNoRows (res) {
+function resNoRows(res) {
   res.status(200).json({
     status: 200,
     data: []

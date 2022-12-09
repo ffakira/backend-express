@@ -59,7 +59,8 @@ module.exports = (app, client) => {
 
   app.patch('/lyric/:id/like', async (req, res) => {
     const queryLyricId = 'SELECT id, likes FROM lyric_table WHERE id = $1'
-    const queryUpdate = 'UPDATE lyric_table SET likes = $2, updated_at = NOW() WHERE id = $1'
+    const queryUpdate =
+      'UPDATE lyric_table SET likes = $2, updated_at = NOW() WHERE id = $1'
 
     try {
       const respLyricId = await client.query(queryLyricId, [req.params.id])
@@ -80,7 +81,8 @@ module.exports = (app, client) => {
 
   app.patch('lyric/:id/dislike', async (req, res) => {
     const queryLyricId = 'SELECT id, likes FROM lyric_table WHERE id = $1'
-    const queryUpdate = 'UPDATE lyric_table SET likes $2, updated_at = NOW() WHERE id = $1'
+    const queryUpdate =
+      'UPDATE lyric_table SET likes $2, updated_at = NOW() WHERE id = $1'
 
     try {
       const respLyricId = await client.query(queryLyricId, [req.params.id])
@@ -105,7 +107,8 @@ module.exports = (app, client) => {
   app.patch('/lyric/:id', async (req, res) => {
     const { likes, content, songId } = req.body
     const queryLyricId = 'SELECT likes, content FROM lyric_table WHERE id = $1'
-    const queryUpdateLyric = 'UPDATE lyric_table SET likes = $2, content = $3, updated_at = NOW() WHERE id = $1'
+    const queryUpdateLyric =
+      'UPDATE lyric_table SET likes = $2, content = $3, updated_at = NOW() WHERE id = $1'
 
     try {
       const respLyricId = await client.query(queryLyricId, [req.params.id])

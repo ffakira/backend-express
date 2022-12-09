@@ -9,7 +9,7 @@ const client = new Client({
   port: process.env.DB_HORT
 })
 
-async function createTable () {
+async function createTable() {
   const query = `
     CREATE TABLE IF NOT EXISTS user_table (
       id BIGSERIAL PRIMARY KEY,

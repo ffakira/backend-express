@@ -10,16 +10,21 @@ const app = express()
 /** @dev connect to postgres */
 client.connect(async (err) => {
   if (err) throw err
-  console.log(`[console]: Postgres connected to: postgres://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`)
+  console.log(
+    `[console]: Postgres connected to: postgres://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`
+  )
   await createTable()
 })
 
 /** @dev register middleware */
-app.use('/graphql', graphqlHTTP({
-  // eslint-disable-next-line no-unneeded-ternary
-  graphiql: process.env.NODE_ENV === 'development' ? true : false,
-  schema
-}))
+app.use(
+  '/graphql',
+  graphqlHTTP({
+    // eslint-disable-next-line no-unneeded-ternary
+    graphiql: process.env.NODE_ENV === 'development' ? true : false,
+    schema
+  })
+)
 
 app.use(cors())
 app.use(express.json())
