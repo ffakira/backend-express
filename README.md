@@ -11,11 +11,9 @@
 - Integrate user authentication
 
 
-### Env file
+### Configuration file
 
-* `DB_` env variables are for setting up Postgresq, please note that currently only supports Postgres as I am using `pg` library instead of `sequelize`
-
-In the future, I will integrate a database migration file, along with `sequelize` library.
+* `DB_` env variables are for setting up Postgres in `.env`
 
 ```sh
 NODE_ENV=development
@@ -25,6 +23,21 @@ DB_USERNAME=
 DB_PASSWORD=
 DB_PORT=5432
 DB_HOST=localhost
+```
+
+Migration file config file `database.json`, all migrations available at `migrations` folder
+
+```json
+{
+  "dev": {
+    "driver": "pg",
+    "user": "<username>",
+    "password": "<password>",
+    "host": "localhost",
+    "database": "<database_name>",
+    "port": "5432"
+  }
+}
 ```
 
 ### Pre-commit hooks
