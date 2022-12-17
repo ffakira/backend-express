@@ -1,22 +1,46 @@
+'use strict'
+
 require('dotenv').config()
 
 const express = require('express')
+const session = require('express-session')
+const PgSession = require('express-pg-session')(session)
 const schema = require('./schema/schema')
 const cors = require('cors')
 const { graphqlHTTP } = require('express-graphql')
-const { createTable } = require('./services/db')
 const app = express()
 
-/** @dev connect to postgres */
-// client.connect(async (err) => {
-//   if (err) throw err
-//   console.log(
-//     `[console]: Postgres connected to: postgres://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`
-//   )
-//   await createTable()
-// })
+/** @dev config file */
+const { Pool } = require('pg')
+const pool = new Pool({
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
+})
 
-/** @dev register middleware */
+const columnNames = {
+  session_id: 'sid',
+  session_data: 'sess',
+  expire: 'expires_at'
+}
+
+app.use(session({
+  store: new PgSession({
+    pool,
+    tableName: 'user_session_table',
+    columns: columnNames
+  }),
+  secret: process.env.COOKIE_SESSION,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+  }
+}))
+
+/** @dev register graphql middleware */
 app.use(
   '/graphql',
   graphqlHTTP({
@@ -31,12 +55,11 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 /** @dev register services */
-// require('./services/song')(app, client)
-// require('./services/lyric')(app, client)
+require('./services/song')(app, pool)
+require('./services/lyric')(app, pool)
 
 /** @dev start server */
 const PORT = process.env.PORT || 4000
 app.listen(PORT, async () => {
-  console.log('[console]: Listerning to port:', PORT)
-  await createTable()
+  console.log('[console] Listerning to port:', PORT)
 })
