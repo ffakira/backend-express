@@ -1,4 +1,6 @@
 const bcrypt = require('bcrypt')
+const path = require('path')
+const fs = require('fs')
 
 function resError (res, err) {
   console.error('[error]:', err)
@@ -50,9 +52,21 @@ async function verifyPassword (password, encrypted) {
   }
 }
 
+/**
+ * @dev automatically register services folder
+ */
+function registerServices (app, pool) {
+  const servicePath = path.resolve(__dirname, '../services')
+  const files = fs.readdirSync(servicePath)
+  for (const file of files) {
+    require(`${servicePath}/${file}`)(app, pool)
+  }
+}
+
 module.exports = {
   resError,
   resNoRows,
   hashPassword,
-  verifyPassword
+  verifyPassword,
+  registerServices
 }

@@ -6,6 +6,7 @@ const express = require('express')
 const session = require('express-session')
 const PgSession = require('express-pg-session')(session)
 const schema = require('./schema/schema')
+const { registerServices } = require('./utils')
 const cors = require('cors')
 const { graphqlHTTP } = require('express-graphql')
 const app = express()
@@ -55,8 +56,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 /** @dev register services */
-require('./services/song')(app, pool)
-require('./services/lyric')(app, pool)
+registerServices(app, pool)
 
 /** @dev start server */
 const PORT = process.env.PORT || 4000
