@@ -4,7 +4,7 @@ require('dotenv').config()
 
 const express = require('express')
 const session = require('express-session')
-const cookieParser = require('cookie-parser')
+const morgan = require('morgan')
 const PgSession = require('express-pg-session')(session)
 const schema = require('./schema/schema')
 const { registerServices } = require('./utils')
@@ -12,25 +12,27 @@ const cors = require('cors')
 const { graphqlHTTP } = require('express-graphql')
 const app = express()
 const pool = require('./db')
+const { NODE_ENV } = process.env
 
+/** @dev session middleware */
 const columnNames = {
   session_id: 'sid',
   session_data: 'sess',
   expire: 'expires_at'
 }
 
-app.use(cookieParser())
+const ONE_DAY = 24 * 60 * 60 * 1000
 app.use(session({
   store: new PgSession({
     pool,
     tableName: 'user_session_table',
     columns: columnNames
   }),
-  secret: process.env.COOKIE_SESSION,
+  secret: process.env.COOKIE_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    maxAge: ONE_DAY, // 1 day
     httpOnly: true
   }
 }))
@@ -40,17 +42,21 @@ app.use(
   '/graphql',
   graphqlHTTP({
     // eslint-disable-next-line no-unneeded-ternary
-    graphiql: process.env.NODE_ENV === 'development' ? true : false,
+    graphiql: NODE_ENV === 'development' ? true : false,
     schema
   })
 )
+
+/** @dev additional middlewares */
+const morganEnv = NODE_ENV === 'development' ? 'dev' : 'combined'
+app.use(morgan(morganEnv))
 
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 /** @dev register services */
-registerServices(app, pool)
+registerServices(app)
 
 /** @dev start server */
 const PORT = process.env.PORT || 4000

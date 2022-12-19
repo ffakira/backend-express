@@ -4,6 +4,18 @@ const bcrypt = require('bcrypt')
 const path = require('path')
 const fs = require('fs')
 
+/**
+ * @dev status code 500 in json format
+ * ```json
+ * {
+ *   "status": 500,
+ *   "message": "custom error message"
+ * }
+ * ```
+ * @param {Express.Response} res
+ * @param {Error} err
+ * @returns {void}
+ */
 function resError (res, err) {
   console.error('[error]:', err)
   res.status(500).json({
@@ -12,6 +24,17 @@ function resError (res, err) {
   })
 }
 
+/**
+ * @dev status code 200 in json format
+ * ```json
+ * {
+ *   "status": 200,
+ *   "data": []
+ * }
+ * ```
+ * @param {Express.Response} res Express.Response object expected
+ * @returns {void}
+ */
 function resNoRows (res) {
   res.status(200).json({
     status: 200,
@@ -21,7 +44,7 @@ function resNoRows (res) {
 
 /**
  * @param {string} plainPassword
- * @returns {string} hashed password from bcrypt
+ * @returns {Promise.<string>} hashed password from bcrypt
  */
 async function hashPassword (plainPassword) {
   if (plainPassword.length < 8) {
@@ -40,7 +63,7 @@ async function hashPassword (plainPassword) {
  * @dev Utility function to verify password
  * @param {string} password plain text password
  * @param {string} encrypted an encrypted password coming from db
- * @returns {boolean} promise boolean if a password matches
+ * @returns {Promise.<boolean>} promise boolean if a password matches
  */
 async function verifyPassword (password, encrypted) {
   const isMatch = await bcrypt.compare(password, encrypted)
@@ -55,6 +78,8 @@ async function verifyPassword (password, encrypted) {
 
 /**
  * @dev automatically register services folder
+ * @param {Express} app
+ * @returns {void}
  */
 function registerServices (app) {
   const servicePath = path.resolve(__dirname, '../services')
