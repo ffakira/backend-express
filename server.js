@@ -5,7 +5,7 @@ require('dotenv').config()
 const express = require('express')
 const session = require('express-session')
 const morgan = require('morgan')
-const PgSession = require('express-pg-session')(session)
+const PgSession = require('./utils/store')(session)
 const schema = require('./schema/schema')
 const { registerServices } = require('./utils')
 const cors = require('cors')
@@ -17,19 +17,9 @@ const { NODE_ENV } = process.env
 app.disable('x-powered-by')
 
 /** @dev session middleware */
-const columnNames = {
-  session_id: 'sid',
-  session_data: 'sess',
-  expire: 'expires_at'
-}
-
 const ONE_DAY = 24 * 60 * 60 * 1000
 app.use(session({
-  store: new PgSession({
-    pool,
-    tableName: 'user_session_table',
-    columns: columnNames
-  }),
+  store: new PgSession(),
   secret: process.env.COOKIE_SECRET,
   resave: false,
   saveUninitialized: false,
