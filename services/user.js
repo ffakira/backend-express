@@ -1,28 +1,10 @@
 'use strict'
 
 const { Router } = require('express')
-const { v4: uuidv4 } = require('uuid')
 const pool = require('../db')
+const { auth, passwordAttempts } = require('../middleware/account')
 const { resError, hashPassword, verifyPassword } = require('../utils')
 const router = Router()
-
-// router.get('/:id', async (req, res) => {
-//   const query = 'SELECT * FROM user_table WHERE id = $1 LIMIT 1'
-
-//   try {
-//     const resp = await pool.query(query, [req.params.id])
-//     if (resp.rowCount === 0) {
-//       res.status(204).json({ status: 204, message: 'USER ID not found' })
-//     } else {
-//       res.status(200).json({
-//         status: 200,
-//         data: resp.rows[0]
-//       })
-//     }
-//   } catch (err) {
-//     resError(res, err)
-//   }
-// })
 
 router.post('/register', async (req, res) => {
   const { username, password } = req.body
@@ -56,9 +38,10 @@ router.post('/login', async (req, res) => {
       if (isPassword) {
         req.session.isAuth = true
         req.session.username = username
+        delete req.session.attemptedTries
         res.status(200).json({ status: 200, message: 'Authenticated.' })
       } else {
-        res.status(403).json({ status: 403, message: 'Bad Credentials.' })
+        passwordAttempts(req, res)
       }
     }
   } catch (err) {
@@ -66,17 +49,14 @@ router.post('/login', async (req, res) => {
   }
 })
 
-router.get('/authenticated', async (req, res) => {
-  console.log(req.session.isAuth)
-  // if (req.session.isAuth) {
-  //   res.status(200).json({ status: 200, message: 'Authenticated' })
-  // }
-  // res.status(401).json({ status: 401, message: 'Forbidden.' })
+router.get('/authenticated', auth, (req, res) => {
+  res.status(200).json({ status: 200, message: 'User is authenticated' })
 })
 
 router.post('/logout', async (req, res) => {
   req.session = null
   req.session.destroy()
+  res.status(200).json({ status: 200, message: 'Logout.' })
 })
 
 module.exports = {
