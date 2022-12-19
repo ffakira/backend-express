@@ -12,7 +12,7 @@ const fs = require('fs')
  *   "message": "custom error message"
  * }
  * ```
- * @param {Express.Response} res
+ * @param {Express.Response} res Express.Response object expected
  * @param {Error} err
  * @returns {void}
  */

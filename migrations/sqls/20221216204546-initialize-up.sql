@@ -34,4 +34,23 @@ CREATE TABLE IF NOT EXISTS song_table (
   FOREIGN KEY (lyric_id) REFERENCES lyric_table(id) ON DELETE SET NULL
 );
 
-ALTER TABLE lyric_table ADD FOREIGN KEY (song_id) REFERENCES song_table(id) ON DELETE SET NULL;
+ALTER TABLE lyric_table ADD FOREIGN KEY (song_id) 
+REFERENCES song_table(id) ON DELETE SET NULL;
+
+CREATE OR REPLACE FUNCTION trigger_updated_at() RETURNS TRIGGER
+LANGUAGE plpgsql AS 
+$$
+BEGIN
+  NEW.updated_at := NOW();
+  RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER user_trigger_timestamp BEFORE UPDATE ON user_table
+  FOR EACH ROW EXECUTE PROCEDURE trigger_updated_at();
+
+CREATE TRIGGER lyric_trigger_timestamp BEFORE UPDATE ON lyric_table
+  FOR EACH ROW EXECUTE PROCEDURE trigger_updated_at();
+
+CREATE TRIGGER  song_trigger_timestamp BEFORE UPDATE ON song_table
+  FOR EACH ROW EXECUTE PROCEDURE trigger_updated_at();

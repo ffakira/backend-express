@@ -14,6 +14,8 @@ const app = express()
 const pool = require('./db')
 const { NODE_ENV } = process.env
 
+app.disable('x-powered-by')
+
 /** @dev session middleware */
 const columnNames = {
   session_id: 'sid',
