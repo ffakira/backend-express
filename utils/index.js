@@ -51,7 +51,7 @@ async function hashPassword (plainPassword) {
     throw Error('Error: password length cannot be less than 8 characters')
   }
   try {
-    const hashPassword = await bcrypt.hash(plainPassword, process.env.SALT_ROUNDS)
+    const hashPassword = await bcrypt.hash(plainPassword, +process.env.SALT_ROUNDS)
     return hashPassword
   } catch (err) {
     console.error('[console] an error occured:', err.message)
