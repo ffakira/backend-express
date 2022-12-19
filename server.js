@@ -4,22 +4,14 @@ require('dotenv').config()
 
 const express = require('express')
 const session = require('express-session')
+const cookieParser = require('cookie-parser')
 const PgSession = require('express-pg-session')(session)
 const schema = require('./schema/schema')
 const { registerServices } = require('./utils')
 const cors = require('cors')
 const { graphqlHTTP } = require('express-graphql')
 const app = express()
-
-/** @dev config file */
-const { Pool } = require('pg')
-const pool = new Pool({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  user: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
-})
+const pool = require('./db')
 
 const columnNames = {
   session_id: 'sid',
@@ -27,6 +19,7 @@ const columnNames = {
   expire: 'expires_at'
 }
 
+app.use(cookieParser())
 app.use(session({
   store: new PgSession({
     pool,
@@ -37,7 +30,8 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    httpOnly: true
   }
 }))
 

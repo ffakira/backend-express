@@ -1,3 +1,5 @@
+'use strict'
+
 const bcrypt = require('bcrypt')
 const path = require('path')
 const fs = require('fs')
@@ -25,9 +27,8 @@ async function hashPassword (plainPassword) {
   if (plainPassword.length < 8) {
     throw Error('Error: password length cannot be less than 8 characters')
   }
-  const saltRounds = process.env.SALT_ROUNDS
   try {
-    const hashPassword = await bcrypt.hash(plainPassword, saltRounds)
+    const hashPassword = await bcrypt.hash(plainPassword, process.env.SALT_ROUNDS)
     return hashPassword
   } catch (err) {
     console.error('[console] an error occured:', err.message)
@@ -55,11 +56,12 @@ async function verifyPassword (password, encrypted) {
 /**
  * @dev automatically register services folder
  */
-function registerServices (app, pool) {
+function registerServices (app) {
   const servicePath = path.resolve(__dirname, '../services')
   const files = fs.readdirSync(servicePath)
   for (const file of files) {
-    require(`${servicePath}/${file}`)(app, pool)
+    const { router, name } = require(`${servicePath}/${file}`)
+    app.use(name, router)
   }
 }
 
