@@ -90,10 +90,13 @@ function registerServices (app) {
   }
 }
 
+const currentTimestamp = () => Math.ceil(Date.now() / 1000)
+
 module.exports = {
   resError,
   resNoRows,
   hashPassword,
   verifyPassword,
-  registerServices
+  registerServices,
+  currentTimestamp
 }

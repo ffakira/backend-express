@@ -7,6 +7,7 @@ const { Session, Store } = require('express-session')
 // eslint-disable-next-line no-unused-vars
 const { Pool, QueryResult } = require('pg')
 const pool = require('../db')
+const { currentTimestamp } = require('./index')
 const ONE_DAY = 86_400
 
 /**
@@ -28,8 +29,6 @@ const callbackifyPromiseResolution = (value, cb) => {
     )
   }
 }
-
-const currentTimestamp = () => Math.ceil(Date.now() / 1000)
 
 /**
  * @typedef PgStoreOptions

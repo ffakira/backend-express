@@ -2,7 +2,7 @@
 
 const { Router } = require('express')
 const pool = require('../db')
-const { auth, passwordAttempts } = require('../middleware/account')
+const { auth, passwordAttempts, timeoutAccount } = require('../middleware/account')
 const { resError, hashPassword, verifyPassword } = require('../utils')
 const router = Router()
 
@@ -25,10 +25,10 @@ router.post('/register', async (req, res) => {
   }
 })
 
-router.post('/login', async (req, res) => {
+router.post('/login', timeoutAccount, async (req, res) => {
   const { username, password } = req.body
   const query = 'SELECT username, password FROM user_table WHERE username=$1 LIMIT 1'
-  /** @TODO implement user authentication and session */
+
   try {
     const resp = await pool.query(query, [username])
     if (resp.rowCount === 0) {
@@ -39,6 +39,7 @@ router.post('/login', async (req, res) => {
         req.session.isAuth = true
         req.session.username = username
         delete req.session.attemptedTries
+        delete req.session.attemptAccessTime
         res.status(200).json({ status: 200, message: 'Authenticated.' })
       } else {
         passwordAttempts(req, res)
@@ -54,8 +55,9 @@ router.get('/authenticated', auth, (req, res) => {
 })
 
 router.post('/logout', async (req, res) => {
-  req.session = null
   req.session.destroy()
+  res.clearCookie('connect.sid')
+  delete req.session
   res.status(200).json({ status: 200, message: 'Logout.' })
 })
 

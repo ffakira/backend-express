@@ -1,5 +1,7 @@
 // eslint-disable-next-line no-unused-vars
+const e = require('express')
 const { Request, Response, NextFunction } = require('express')
+const { currentTimestamp } = require('../utils')
 
 /**
  * @param {Request} req express.Request
@@ -14,29 +16,55 @@ function auth (req, res, next) {
 /**
  * @param {Request} req express.Request
  * @param {Response} res express.Response
+ * @param {NextFunction} next express.NextFunction
  */
-function passwordAttempts (req, res) {
-  if (!req.session.attemptedTries) req.session.attemptedTries = 1
-  else req.session.attemptedTries++
+function timeoutAccount (req, res, next) {
+  const { attemptAccessTime } = req.session
+  const timeDiff = typeof attemtAccessTime === 'undefined'
+    ? undefined
+    : attemptAccessTime - currentTimestamp()
 
-  /** @TODO integrate lock time mechanism */
-  if (req.session.attemptedTries < 5) {
+  if (timeDiff <= 0 || !req.session.attemptAccessTime) {
+    next()
+  } else {
     res.status(403).json({
       status: 403,
-      message: `Bad Credentials. You can attempt ${5 - req.session.attemptedTries} tries`
+      message: `Timeout for ${timeDiff} seconds`
     })
   }
+}
 
-  if (req.session.attemptedTries >= 5 && req.session.attemptedTries <= 10) {
-    res.status(403).json({ status: 403, message: 'Timeout for 10 mins' })
-  }
+/**
+ * @param {Request} req express.Request
+ * @param {Response} res express.Response
+ */
+function passwordAttempts (req, res) {
+  req.session.isAuth = false
+  const { attemptAccessTime, passwordAttempts } = req.session
+  const timeDiff = req.session.attemptAccessTime - currentTimestamp()
 
-  if (req.session.attemptedTries > 10) {
-    res.status(403).json({ status: 403, message: 'Account have been locked' })
+  if (typeof passwordAttempts === 'undefined' && typeof attemptAccessTime === 'undefined') {
+    req.session.passwordAttempts = 1
+    req.session.attemptAccessTime = currentTimestamp()
+  } else {
+    const timeDiff = req.session.attemptAccessTime - currentTimestamp()
+    if (timeDiff <= 0) {
+      req.session.passwordAttempts++
+
+      if (passwordAttempts <= 5) {
+        req.session.attemptAccessTime = currentTimestamp() + 60 * 10 // 10 mins
+      } else if (passwordAttempts > 5 && passwordAttempts <= 7) {
+        req.session.attemptAccessTime = currentTimestamp() + 60 * 30 // 30 mins
+      } else if (passwordAttempts > 7) {
+        res.status(403).json({ status: 403, message: 'Account have been locked' })
+      }
+    }
   }
+  res.status(403).json({ status: 403, message: `${timeDiff} seconds left` })
 }
 
 module.exports = {
   auth,
+  timeoutAccount,
   passwordAttempts
 }
