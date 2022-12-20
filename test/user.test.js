@@ -1,6 +1,6 @@
-const { describe, expect, it } = require('@jest/globals')
+const { beforeEach, describe, expect, it } = require('@jest/globals')
 const request = require('supertest')
-const app = require('../server')
+const app = require('../index')
 
 const ROUTES = {
   register: '/user/register',
@@ -8,10 +8,13 @@ const ROUTES = {
 }
 
 describe('POST /user', () => {
+  beforeEach(() => {
+    this.testServer = app.listen(4444, () => console.log('[test]: listening to port 4444'))
+  })
   describe('given username and password', () => {
     // should save the username and password to the database
     it('should respond with a json object containing the username', async () => {
-      const response = await request(app).post(ROUTES.register).send({
+      const response = await request(this.testServer).post(ROUTES.register).send({
         username: 'Test',
         password: 'Password'
       })
@@ -21,6 +24,7 @@ describe('POST /user', () => {
         data: { username: 'Test' }
       })
       expect(response.headers['content-type']).toEqual(expect.stringContaining('json'))
+      this.testServer.close()
     })
   })
 
@@ -34,7 +38,7 @@ describe('POST /user', () => {
         {}
       ]
       for (const body of bodyData) {
-        const response = await request(app).post(ROUTES.register).send(body)
+        const response = await request(this.testServer).post(ROUTES.register).send(body)
         expect(response.statusCode).toBe(400)
         expect(JSON.parse(response.text)).toStrictEqual({
           status: 400,
@@ -42,6 +46,7 @@ describe('POST /user', () => {
         })
         expect(response.headers['content-type']).toEqual(expect.stringContaining('json'))
       }
+      this.testServer.close()
     })
   })
 })
