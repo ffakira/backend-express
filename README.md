@@ -5,18 +5,18 @@
 
 ### TODO
 
-- [] Add documentation to API
-- [] Support http2
-- [] Add e-mail verification
-- [] Create jest mock functions for unit testing
-- [] Implement depedency database injection to /user
+- [ ] Add documentation to API
+- [ ] Support http2
+- [ ] Add e-mail verification
+- [ ] Create jest mock functions for unit testing
+- [ ] Implement depedency database injection to /user
 - [x] Integrate user authentication
 - [x] Added user account lock mechanism
 
 ### Currently working on
-- [] Add unit test for /user router
-- [] Create sqlite memory
-- [] Create new `column field` for `user_table` for `isLocked` flag
+- [ ] Add unit test for /user router
+- [ ] Create sqlite memory
+- [ ] Create new `column field` for `user_table` for `isLocked` flag
 
 ### Configuration file
 
