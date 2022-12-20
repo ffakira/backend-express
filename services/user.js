@@ -8,21 +8,35 @@ const router = Router()
 
 router.post('/register', async (req, res) => {
   const { username, password } = req.body
-  const query = 'INSERT INTO user_table (username, password) VALUES ($1, $2)'
-  try {
-    const hash = await hashPassword(password)
-    const values = [username, hash]
-    await pool.query(query, values)
-    console.log('[console] new user inserted')
+  if (!username || !password) {
+    res.status(400).json({
+      status: 400,
+      message: 'Missing attribute: username or password'
+    })
+  } else {
     res.status(201).json({
       status: 201,
       data: {
         username
       }
     })
-  } catch (err) {
-    resError(res, err)
   }
+  // const { username, password } = req.body
+  // const query = 'INSERT INTO user_table (username, password) VALUES ($1, $2)'
+  // try {
+  //   const hash = await hashPassword(password)
+  //   const values = [username, hash]
+  //   await pool.query(query, values)
+  //   console.log('[console] new user inserted')
+  //   res.status(201).json({
+  //     status: 201,
+  //     data: {
+  //       username
+  //     }
+  //   })
+  // } catch (err) {
+  //   resError(res, err)
+  // }
 })
 
 router.post('/login', timeoutAccount, async (req, res) => {

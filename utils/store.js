@@ -132,7 +132,6 @@ module.exports = (session) => {
      * @access public
      */
     set (sid, sess, fn) {
-      console.log('trigger set')
       const expireTime = this.#getExpireTime(sess)
       const query = `INSERT INTO session (sess, expire, sid) VALUES ($1, TO_TIMESTAMP($2), $3)
         ON CONFLICT (sid) DO UPDATE SET sess=$1

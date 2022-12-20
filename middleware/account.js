@@ -1,5 +1,4 @@
 // eslint-disable-next-line no-unused-vars
-const e = require('express')
 const { Request, Response, NextFunction } = require('express')
 const { currentTimestamp } = require('../utils')
 
