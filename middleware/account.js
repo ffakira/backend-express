@@ -18,17 +18,13 @@ function auth (req, res, next) {
  * @param {NextFunction} next express.NextFunction
  */
 function timeoutAccount (req, res, next) {
-  const { attemptAccessTime } = req.session
-  const timeDiff = typeof attemtAccessTime === 'undefined'
-    ? undefined
-    : attemptAccessTime - currentTimestamp()
-
-  if (timeDiff <= 0 || !req.session.attemptAccessTime) {
+  const timeDiff = req.session.attemptAccessTime - currentTimestamp()
+  if (currentTimestamp() > req.session.attemptAccessTime) {
     next()
   } else {
     res.status(403).json({
       status: 403,
-      message: `Timeout for ${timeDiff} seconds`
+      message: `Timeout for ${timeDiff <= 0 ? 0 : timeDiff} seconds`
     })
   }
 }
@@ -40,14 +36,15 @@ function timeoutAccount (req, res, next) {
 function passwordAttempts (req, res) {
   req.session.isAuth = false
   const { attemptAccessTime, passwordAttempts } = req.session
-  const timeDiff = req.session.attemptAccessTime - currentTimestamp()
+  let timeDiff = req.session.attemptAccessTime - currentTimestamp()
 
-  if (typeof passwordAttempts === 'undefined' && typeof attemptAccessTime === 'undefined') {
+  /** @dev user's first invalid password */
+  if (!passwordAttempts && !attemptAccessTime) {
     req.session.passwordAttempts = 1
     req.session.attemptAccessTime = currentTimestamp()
+    timeDiff = req.session.attemptAccessTime - currentTimestamp()
   } else {
-    const timeDiff = req.session.attemptAccessTime - currentTimestamp()
-    if (timeDiff <= 0) {
+    if (currentTimestamp() > req.session.attemptAccessTime) {
       req.session.passwordAttempts++
 
       if (passwordAttempts <= 5) {
@@ -59,7 +56,7 @@ function passwordAttempts (req, res) {
       }
     }
   }
-  res.status(403).json({ status: 403, message: `${timeDiff} seconds left` })
+  res.status(403).json({ status: 403, message: `${timeDiff <= 0 ? 0 : timeDiff} seconds left` })
 }
 
 module.exports = {

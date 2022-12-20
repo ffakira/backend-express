@@ -4,7 +4,7 @@
   "description": "A simple backend API built with graphql, postgres and express",
   "main": "server.js",
   "scripts": {
-    "test": "npx jest",
+    "test": "npx jest --detectOpenHandles --forceExit",
     "dev": "nodemon ./server.js",
     "lint": "prettier --check .",
     "format": "prettier --write ."
@@ -40,7 +40,6 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-graphql": "^0.12.0",
-    "express-pg-session": "^1.1.0",
     "express-session": "^1.17.3",
     "graphql": "^15.8.0",
     "pg": "^8.8.0"
