@@ -4,15 +4,6 @@ import { createUser, getUser, IUser } from '../db/user'
 import { User } from '../types/custom'
 import { verifyPassword } from '../utils'
 
-declare module 'express-session' {
-  interface SessionData {
-    isAuth?: boolean
-    username?: string
-    attemptAccessTime?: null | number
-    passwordAttempts?: null | number
-  }
-}
-
 const router = Router()
 
 router.post('/register', async (req: Request, res: Response<User>) => {

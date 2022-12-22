@@ -3,14 +3,6 @@ import { Request, Response, NextFunction } from 'express'
 import { currentTimestamp } from '../utils'
 import { User } from '../types/custom'
 
-declare module 'express-session' {
-  interface SessionData {
-    isAuth?: boolean
-    attemptAccessTime?: null | number
-    passwordAttempts?: null | number
-  }
-}
-
 /**
  * @param {Request} req express.Request
  * @param {Response} res express.Response
@@ -65,12 +57,10 @@ function passwordAttempts(req: Request, res: Response<User>): void {
       } else if (passwordAttempts! > 5 && passwordAttempts! <= 7) {
         req.session.attemptAccessTime = currentTimestamp() + 60 * 30 // 30 mins
       } else if (passwordAttempts! > 7) {
-        res
-          .status(StatusCodes.LOCKED)
-          .json({
-            status: StatusCodes.LOCKED,
-            msg: getReasonPhrase(StatusCodes.LOCKED)
-          })
+        res.status(StatusCodes.LOCKED).json({
+          status: StatusCodes.LOCKED,
+          msg: getReasonPhrase(StatusCodes.LOCKED)
+        })
       }
     }
   }
