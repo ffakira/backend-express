@@ -9,7 +9,7 @@ import PgStore from './utils/store'
 const app = express()
 const { NODE_ENV } = process.env
 
-const storeStrategy = NODE_ENV === 'test' ? MemoryStore : new PgStore()
+const storeStrategy = NODE_ENV === 'test' ? new MemoryStore() : new PgStore()
 const secure = NODE_ENV === 'development' || NODE_ENV === 'test' ? false : true
 app.use(
   session({
