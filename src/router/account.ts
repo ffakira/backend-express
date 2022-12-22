@@ -23,27 +23,32 @@ router.post('/register', async (req: Request, res: Response<User>) => {
       msg: getReasonPhrase(StatusCodes.BAD_REQUEST)
     })
   }
+  res.status(StatusCodes.CREATED).json({
+    status: StatusCodes.CREATED,
+    data: { username }
+  })
 
-  try {
-    await createUser(username, password)
-    res.status(StatusCodes.CREATED).json({
-      status: StatusCodes.CREATED,
-      data: { username }
-    })
-  } catch (err) {
-    if (err instanceof Error) {
-      if (err.message.includes('duplicate key value')) {
-        res.status(StatusCodes.CONFLICT).json({
-          status: StatusCodes.CONFLICT,
-          msg: getReasonPhrase(StatusCodes.CONFLICT)
-        })
-      }
-    }
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      status: StatusCodes.INTERNAL_SERVER_ERROR,
-      msg: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR)
-    })
-  }
+  /** @TODO implement the remaining function */
+  // try {
+  //   await createUser(username, password)
+  //   res.status(StatusCodes.CREATED).json({
+  //     status: StatusCodes.CREATED,
+  //     data: { username }
+  //   })
+  // } catch (err) {
+  //   if (err instanceof Error) {
+  //     if (err.message.includes('duplicate key value')) {
+  //       res.status(StatusCodes.CONFLICT).json({
+  //         status: StatusCodes.CONFLICT,
+  //         msg: getReasonPhrase(StatusCodes.CONFLICT)
+  //       })
+  //     }
+  //   }
+  //   res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+  //     status: StatusCodes.INTERNAL_SERVER_ERROR,
+  //     msg: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR)
+  //   })
+  // }
 })
 
 router.post('/login', async (req: Request, res: Response) => {
