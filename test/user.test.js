@@ -9,21 +9,27 @@ const ROUTES = {
 
 describe('POST /user', () => {
   beforeEach(() => {
-    this.testServer = app.listen(4444, () => console.log('[test]: listening to port 4444'))
+    this.testServer = app.listen(4444, () =>
+      console.log('[test]: listening to port 4444')
+    )
   })
   describe('given username and password', () => {
     // should save the username and password to the database
     it('should respond with a json object containing the username', async () => {
-      const response = await request(this.testServer).post(ROUTES.register).send({
-        username: 'Test',
-        password: 'Password'
-      })
+      const response = await request(this.testServer)
+        .post(ROUTES.register)
+        .send({
+          username: 'Test',
+          password: 'Password'
+        })
       expect(response.statusCode).toBe(201)
       expect(JSON.parse(response.text)).toStrictEqual({
         status: 201,
         data: { username: 'Test' }
       })
-      expect(response.headers['content-type']).toEqual(expect.stringContaining('json'))
+      expect(response.headers['content-type']).toEqual(
+        expect.stringContaining('json')
+      )
       this.testServer.close()
     })
   })
@@ -38,13 +44,17 @@ describe('POST /user', () => {
         {}
       ]
       for (const body of bodyData) {
-        const response = await request(this.testServer).post(ROUTES.register).send(body)
+        const response = await request(this.testServer)
+          .post(ROUTES.register)
+          .send(body)
         expect(response.statusCode).toBe(400)
         expect(JSON.parse(response.text)).toStrictEqual({
           status: 400,
           message: 'Missing attribute: username or password'
         })
-        expect(response.headers['content-type']).toEqual(expect.stringContaining('json'))
+        expect(response.headers['content-type']).toEqual(
+          expect.stringContaining('json')
+        )
       }
       this.testServer.close()
     })

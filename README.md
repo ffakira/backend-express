@@ -14,13 +14,14 @@
 - [x] Added user account lock mechanism
 
 ### Currently working on
+
 - [ ] Add unit test for /user router
 - [ ] Create sqlite memory
 - [ ] Create new `column field` for `user_table` for `isLocked` flag
 
 ### Configuration file
 
-* `DB_` env variables are for setting up Postgres in `.env`
+- `DB_` env variables are for setting up Postgres in `.env`
 
 ```sh
 NODE_ENV=development
@@ -48,4 +49,5 @@ Migration file config file `database.json`, all migrations available at `migrati
 ```
 
 ### Pre-commit hooks
-* Currently using husky and prettier to format files
+
+- Currently using husky and prettier to format files
