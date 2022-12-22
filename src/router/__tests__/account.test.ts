@@ -3,6 +3,8 @@ import app from '../../index'
 import request from 'supertest'
 import { StatusCodes } from 'http-status-codes'
 
+process.env.NODE_ENV = 'test'
+
 enum Routes {
   REGISTER = '/account/register',
   LOGIN = '/account/login'

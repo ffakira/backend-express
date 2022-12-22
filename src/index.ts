@@ -1,6 +1,6 @@
 require('dotenv').config()
 import express from 'express'
-import session from 'express-session'
+import session, { MemoryStore, Store } from 'express-session'
 import morgan from 'morgan'
 import cors from 'cors'
 import { ONE_DAY } from './utils'
@@ -9,10 +9,11 @@ import PgStore from './utils/store'
 const app = express()
 const { NODE_ENV } = process.env
 
+const storeStrategy = NODE_ENV === 'test' ? MemoryStore : new PgStore()
 const secure = NODE_ENV === 'development' || NODE_ENV === 'test' ? false : true
 app.use(
   session({
-    store: new PgStore(),
+    store: storeStrategy as Store,
     name: process.env.COOKIE_NAME,
     secret: process.env.COOKIE_SECRET as string,
     resave: false,

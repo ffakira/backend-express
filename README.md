@@ -1,7 +1,7 @@
-## Simple GraphQL express.js
+## Simple API built with express.js
 
 - Built with Postgres
-- Schemas available at `schema`
+- API endpoints available in the `src/router`
 
 ### TODO
 

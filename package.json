@@ -1,10 +1,11 @@
 {
-  "name": "test-graphql-api",
+  "name": "test-express-api",
   "version": "1.0.0",
   "description": "A simple backend API built with postgres and express",
   "main": "./src/server.ts",
   "scripts": {
     "test": "npx jest --detectOpenHandles --forceExit",
+    "build": "rm -rf dist && tsc",
     "dev": "nodemon",
     "lint": "prettier --check .",
     "format": "prettier --write .",
