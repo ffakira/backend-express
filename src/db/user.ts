@@ -1,16 +1,22 @@
 import { hashPassword } from '../utils'
+import { QueryResult } from 'pg'
 import pool from './posgres'
-
-export async function createUser(username: string, password: string) {
-  const query = 'INSERT INTO user_table (username, password) VALUES ($1, $2)'
-  const hash = await hashPassword(password)
-  const values = [username, hash]
-  return await pool.query(query, values)
-}
 
 export interface IUser {
   username: string
   password: string
+}
+
+export interface UserService {
+  createUser: (username: string, password: string) => Promise<QueryResult>
+  getUser: (username: string) => Promise<IUser | Error>
+}
+
+export async function createUser(username: string, password: string): Promise<QueryResult> {
+  const query = 'INSERT INTO user_table (username, password) VALUES ($1, $2)'
+  const hash = await hashPassword(password)
+  const values = [username, hash]
+  return await pool.query(query, values)
 }
 
 export async function getUser(username: string): Promise<IUser | Error> {

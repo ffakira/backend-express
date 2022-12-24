@@ -13,6 +13,7 @@ router.post('/register', async (req: Request, res: Response<User>) => {
       status: StatusCodes.BAD_REQUEST,
       msg: getReasonPhrase(StatusCodes.BAD_REQUEST)
     })
+    return
   }
   res.status(StatusCodes.CREATED).json({
     status: StatusCodes.CREATED,

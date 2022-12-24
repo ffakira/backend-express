@@ -11,15 +11,29 @@ enum Routes {
 }
 
 describe(`POST ${Routes.REGISTER}`, () => {
-  it('should respond with a josn containing the username', async () => {
-    const response = await request(app).post(Routes.REGISTER).send({
-      username: 'Test',
-      password: 'Password'
-    })
-    expect(response.statusCode).toBe(StatusCodes.CREATED)
-    expect(JSON.parse(response.text)).toStrictEqual({
-      status: StatusCodes.CREATED,
-      data: { username: 'Test' }
-    })
+  // it('should respond with a josn containing the username', async () => {
+  //   const response = await request(app).post(Routes.REGISTER).send({
+  //     username: 'Test',
+  //     password: 'Password'
+  //   })
+  //   expect(response.statusCode).toBe(StatusCodes.CREATED)
+  //   expect(JSON.parse(response.text)).toStrictEqual({
+  //     status: StatusCodes.CREATED,
+  //     data: { username: 'Test' }
+  //   })
+  // })
+  it('should respond a Bad Request status, if one of req.body is missing', async () => {
+    const resBody = [
+      {},
+      {username: 'test'},
+      {password: 'password'},
+      {username: null, password: null},
+      {username: undefined, password: undefined},
+      {invalidParam: 'test', invalidParam2: 'test2'}
+    ]
+    for (const body of resBody) {
+      const response = await request(app).post(Routes.REGISTER).send(body)
+      expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST)
+    }
   })
 })

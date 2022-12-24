@@ -3,16 +3,40 @@ CREATE TABLE IF NOT EXISTS user_table (
   id BIGSERIAL PRIMARY KEY,
   username VARCHAR(255) UNIQUE NOT NULL,
   password VARCHAR(255) NOT NULL,
+  -- email VARCHAR(255) UNIQUE NOT NULL,
+  -- is_verified BOOLEAN default FALSE,
+  -- is_locked BOOLEAN default FALSE,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
 
+-- session table created by express-session PgStore
 CREATE TABLE IF NOT EXISTS session (
   id BIGSERIAL PRIMARY KEY,
   sid VARCHAR(255) UNIQUE NOT NULL,
   sess JSON NOT NULL,
   expire TIMESTAMP(6) NOT NULL
 );
+
+-- CREATE TABLE IF NOT EXISTS ticket_table (
+--   id BIGSERIAL PRIMARY KEY,
+--   created_user_id BIGINT NOT NULL,
+--   status_id BIGINT NOT NULL,
+--   comment TEXT NULL,
+--   last_edited_user_id BIGINT NULL,
+--   created_at TIMESTAMP DEFAULT NOW(),
+--   updated_at TIMESTAMP DEFAULT NOW(),
+--   FOREIGN KEY (created_user_id) REFERENCES user_table(id) ON DELETE SET NULL,
+--   FOREIGN KEY (last_edited_user_id) REFERENCES user_table(id) ON DELETE SET NULL)
+-- );
+
+-- CREATE TABLE IF NOT EXISTS status_table (
+--   id BIGSERIAL PRIMARY KEY,
+--   created_user_id BIGINT NOT NULL,
+--   title VARCHAR(255) NOT NULL,
+--   created_at TIMESTAMP DEFAULT NOW(),
+--   updated_at TIMESTAMP DEFAULT NOW()
+-- );
 
 CREATE TABLE IF NOT EXISTS lyric_table (
   id BIGSERIAL PRIMARY KEY,
