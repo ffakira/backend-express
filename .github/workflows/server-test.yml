@@ -8,17 +8,18 @@ jobs:
         node-version: [18.x]
     steps:
       - name: Make .env file
-        uses: ozaytsev86/create-env-file@v1
+        uses: SpicyPizza/create-envfile@v1.3
         with:
-          ENV_NODE_ENV: ${{ secrets.NODE_ENV }}
-          ENV_DB_NAME: ${{ secrets.DB_NAME }}
-          ENV_DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          ENV_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          ENV_DB_PORT: ${{ secrets.DB_PORT }}
-          ENV_DB_HOST: ${{ secrets.DB_HOST }}
-          ENV_SALT_ROUNDS: ${{ secrets.SALT_ROUNDS }}
-          ENV_COOKIE_NAME: ${{ secrets.COOKIE_NAME }}
-          ENV_COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
+          envkey_NODE_ENV: ${{ secrets.NODE_ENV }}
+          envkey_DB_NAME: ${{ secrets.DB_NAME }}
+          envkey_DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          envkey_DB_PORT: ${{ secrets.DB_PORT }}
+          envkey_DB_HOST: ${{ secrets.DB_HOST }}
+          envkey_SALT_ROUNDS: ${{ secrets.SALT_ROUNDS }}
+          envkey_COOKIE_NAME: ${{ secrets.COOKIE_NAME }}
+          envkey_COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
+          file_name: .env
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
