@@ -1,9 +1,11 @@
 import express from 'express'
+import tempRouter from './temp'
 import accountRouter from './account'
 
 /** @dev dependency injection requiring express.Application */
 export default function (app: express.Application) {
-  app.use('/account', accountRouter)
+  app.use('/', tempRouter)
+  // app.use('/account', accountRouter)
 }
 
 /**
