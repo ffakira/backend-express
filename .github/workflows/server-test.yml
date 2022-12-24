@@ -8,18 +8,8 @@ jobs:
         node-version: [18.x]
     steps:
       - name: Make .env file
-        uses: SpicyPizza/create-envfile@v1.3
-        with:
-          envkey_NODE_ENV: ${{ secrets.NODE_ENV }}
-          envkey_DB_NAME: ${{ secrets.DB_NAME }}
-          envkey_DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          envkey_DB_PORT: ${{ secrets.DB_PORT }}
-          envkey_DB_HOST: ${{ secrets.DB_HOST }}
-          envkey_SALT_ROUNDS: ${{ secrets.SALT_ROUNDS }}
-          envkey_COOKIE_NAME: ${{ secrets.COOKIE_NAME }}
-          envkey_COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
-          file_name: .env
+        run: |
+          echo "${{ secret.DEV_ENV_FILE}}" > .env
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
