@@ -1,4 +1,5 @@
-require('dotenv').config()
+import * as dotenv from 'dotenv'
+dotenv.config()
 import express from 'express'
 import session, { MemoryStore, Store } from 'express-session'
 import morgan from 'morgan'
@@ -15,7 +16,7 @@ app.use(
   session({
     store: storeStrategy as Store,
     name: process.env.COOKIE_NAME,
-    secret: process.env.COOKIE_SECRET as string,
+    secret: process.env.COOKIE_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {

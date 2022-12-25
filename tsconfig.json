@@ -1,6 +1,7 @@
 {
   "ts-node": {
-    "transpileOnly": true
+    "transpileOnly": true,
+    "files": true
   },
   "compilerOptions": {
     "target": "es5",
