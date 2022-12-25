@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Make .env file
         run: |
-          echo "${{ secret.DEV_ENV_FILE}}" > .env
+          echo "${{secrets.DEV_ENV_FILE}}" > .env
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
