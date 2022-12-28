@@ -13,7 +13,7 @@ jobs:
           envkey_COOKIE_NAME: ${{ secrets.COOKIE_NAME }}
           envkey_COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
           envkey_NODE_ENV: ${{ secrets.NODE_ENV }}
-          directory: '${{ github.workspace }}/../../'
+          directory: '../../${{ github.workspace }}'
           file_name: '.env'
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
