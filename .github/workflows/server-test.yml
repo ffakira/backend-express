@@ -8,8 +8,12 @@ jobs:
         node-version: [18.x]
     steps:
       - name: Make .env file
-        run: |
-          echo "${{secrets.DEV_ENV_FILE}}" > .env
+        uses: SpicyPizza/create-envfil@v1
+        with:
+          envkey_COOKIE_NAME: ${{ secrets.COOKIE_NAME }}
+          envkey_NODE_ENV: ${{ secrets.NODE_ENV }}
+          directory: './'
+          file_name: '.env'
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
