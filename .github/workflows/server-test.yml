@@ -8,7 +8,7 @@ jobs:
         node-version: [18.x]
     steps:
       - name: Make .env file
-        uses: SpicyPizza/create-envfil@v1
+        uses: SpicyPizza/create-envfile@v1
         with:
           envkey_COOKIE_NAME: ${{ secrets.COOKIE_NAME }}
           envkey_NODE_ENV: ${{ secrets.NODE_ENV }}
