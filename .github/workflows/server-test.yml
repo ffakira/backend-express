@@ -1,0 +1,25 @@
+on:
+  push:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      - name: Make .env file
+        uses: SpicyPizza/create-envfile@v1.3.1
+        with:
+          envkey_COOKIE_NAME: ${{ secrets.COOKIE_NAME }}
+          envkey_COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
+          envkey_NODE_ENV: test
+          directory: '../../'
+          file_name: '.env'
+          fail_on_empty: true
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: yarn install --frozen-lockfile
+      - run: COOKIE_SECRET=${{ secrets.COOKIE_SECRET }} yarn test
