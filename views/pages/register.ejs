@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<%- include('../partials/header') %>
+<body>
+  <%- include('../partials/navbar') %>
+  <main class="container mt-4">
+    <form action="/account/register" method="POST" class="offset-md-2 col-md-7 shadow-lg p-4 rounded-2">
+      <div class="mb-3">
+        <label for="username" class="form-label fw-bold">Username</label>
+        <input type="text" name="username" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <div class="row">
+          <div class="col-6">
+            <label for="firstName" class="form-label fw-bold">First name</label>
+            <input type="text" name="firstName" class="form-control" />
+          </div>
+          <div class="col-6">
+            <label for="lastName" class="form-label fw-bold">Last name</label>
+            <input type="text" name="lastName" class="form-control" />
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label fw-bold">Email</label>
+        <input type="email" name="email" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label fw-bold">Password</label>
+        <input type="password" class="form-control" name="password" />
+      </div>
+      <div class="mb-3">
+        <label for="confirmPassword" class="form-label fw-bold">Confirm password</label>
+        <input type="password" class="form-control" name="confirmPassword" />
+      </div>
+      <button type="submit" class="btn btn-primary form-control">Register</button>
+    </form>
+  </main>
+</body>
+</html>

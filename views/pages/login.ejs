@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<%- include('../partials/header') %>
+<body>
+  <%- include('../partials/navbar') %>
+  <main class="container mt-4">
+    <form class="offset-md-2 col-md-7 shadow-lg p-3 rounded-2" method="POST" action="/account/login">
+      <div class="mb-3">
+        <label for="username" class="form-label fw-bold">Username</label>
+        <input class="form-control" type="text" name="username" />
+      </div>
+      <div class="mb-2">
+        <label for="password" class="form-label fw-bold">Password</label>
+        <input class="form-control" type="password" name="password" />
+      </div>
+      <p>Forgot password <a href="/forgot-password">click here</a></p>
+      <button type="submit" class="btn btn-primary col-12 mb-3">Login</button>
+      <p>Register an account <a href="/register">here</a></p>
+    </form>
+  </main>
+</body>
+</html>

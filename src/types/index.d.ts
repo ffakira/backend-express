@@ -30,7 +30,12 @@ declare module 'express-session' {
     username?: string
     attemptAccessTime?: null | number
     passwordAttempts?: null | number
+    errorMessage?: string
   }
+}
+
+export declare module 'dayjs-plugin-utc' {
+  export default dayjsPluginUtc
 }
 
 export {}

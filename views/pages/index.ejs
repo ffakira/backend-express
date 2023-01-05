@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<%- include('../partials/header') %>
+<body>
+  <%- include('../partials/navbar') %>
+  <header>
+    <div class="bg-image-container mb-4">
+      <div class="hero-wrapper">
+        <div class="hero-container">
+          <section>
+            <!-- <h1>HomeX | Modern problems. <br />Modern solutions.</h1> -->
+            <h1>HomeX | Coming soon.</h1>
+          </section>
+          <section>
+            <h2 class="mb-4">Sign-up for our beta</h2>
+            <form method="POST" action="/whitelist">
+              <div class="d-flex gap-2">
+                <input type="email" name="email" placeholder="email@example.com" class="form-control form-control-hero">
+                <button type="submit" class="btn btn-success btn-hero" >Join</button>
+              </div>
+            </form>
+          </section>
+        </div>
+      </div>
+    </div>
+  </header>
+</body>
+</html>

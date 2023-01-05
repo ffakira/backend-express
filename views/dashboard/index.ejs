@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<%- include('../partials/header') %>
+<body>
+  <%- include('../partials/navbar') %>
+  <main class="container">
+    <h1>My Properties</h1>
+    <form class="col-md-12 shadow-sm p-3 rounded-2" method="POST" action="/property/create">
+      <h5 class="mb-4">Thumbnail Description</h5>
+      <div class="mb-3">
+        <label for="title" class="form-label fw-bold">Title</label>
+        <input type="text" name="title" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label fw-bold">Description</label>
+        <input type="text" name="description" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label for="reference" class="form-label fw-bold">Ref. ID</label>
+        <input type="text" name="text" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="thumbnail" class="form-label fw-bold">Thumbnail</label>
+        <input class="form-control" type="file" accept="image/png, image/jpeg" />
+      </div>
+      <hr>
+      <h5 class="mb-4">Price Range</h5>
+      <div class="mb-3">
+        <div class="row">
+          <div class="col-4">
+            <label for="minPrice" class="form-label fw-bold">Min. Price</label>
+            <input type="number" class="form-control" min="0" step="10000" />
+          </div>
+          <div class="col-4">
+            <label for="maxPrice" class="form-label fw-bold">Max. Price</label>
+            <input type="number" class="form-control" min="0" step="10000" />
+          </div>
+          <div class="col-4">
+            <label for="currency" class="form-label fw-bold">Currency</label>
+            <select name="currency" id="currency" class="form-select">
+              <option value="brl">R$ (Reais)</option>
+              <option value="usd">USD (US dollar)</option>
+              <option value="eur">EUR (Euro)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <h5 class="mb-4">Location</h5>
+      <div class="mb-3">
+        <div class="row mb-3">
+          <div class="col-6">
+            <label for="provinceState" class="form-label fw-bold">Province / State</label>
+            <input type="text" name="provinceState" class="form-control">
+          </div>
+          <div class="col-6">
+            <label for="city" class="form-label fw-bold">City</label>
+            <input type="text" name="city" class="form-control" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <label for="address" class="form-label fw-bold">Address</label>
+            <input type="text" name="address" class="form-control" />
+          </div>
+          <div class="col-6">
+            <label for="Zipcode" class="form-label fw-bold">Zipcode</label>
+            <input type="text" name="zipcode" class="form-control" />
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="mb-3">
+        <div class="row">
+          <div class="col-md-6 mb-3 mb-md-0">
+            <div class="row">
+              <div class="col-6">
+                <label for="propertyType" class="form-label fw-bold">Property Type</label>
+                <select name="propertType" id="propertyType" class="form-select" aria-label="Property selection">
+                  <option value="house">House</option>
+                  <option value="apartment">Apartment</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label for="propertySale" class="form-label fw-bold">Sale Type</label>
+                <select name="propertySale" id="propertySale" class="form-select">
+                  <option value="sell">Sell</option>
+                  <option value="rent">Rent</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-6">
+                <label for="propertySize" class="form-label fw-bold">Property Size</label>
+                <input type="number" class="form-control" min="0" step="10"/>
+              </div>
+              <div class="col-6">
+                <label for="unit" class="form-label fw-bold">Units</label>
+                <select name="unit" id="unit" class="form-select">
+                  <option value="sqft">Square feet (sqft)</option>
+                  <option value="ms">Square meters (m&sup2;)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <div class="row">
+          <div class="col-4">
+            <label for="totalRooms" class="form-label fw-bold">Number of Rooms</label>
+            <input type="number" class="form-control" min="1" />
+          </div>
+          <div class="col-4">
+            <label for="totalBathrooms" class="form-label fw-bold">Number of Bathrooms</label>
+            <input type="number" class="form-control" min="1">
+          </div>
+          <div class="col-4">
+            <label for="totalFloors" class="form-label fw-bold">Total Floors</label>
+            <input type="number" class="form-control" min="1" />
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="facilities" class="form-label fw-bold">Facilities</label>
+        <div class="row">
+          <div class="d-flex gap-4">
+            <div class="d-flex gap-2">
+              <input type="checkbox" class="form-check-input" name="facilities[]" value="Garage">
+              <label for="garage">Garage</label>
+            </div>
+            <div class="d-flex gap-2">
+              <input type="checkbox" class="form-check-input" name="facilities[]" value="Swimming Pool">
+              <label for="swimmingPool">Swimming Pool</label>
+            </div>
+            <div class="d-flex gap-2">
+              <input type="checkbox" class="form-check-input" name="facilities[]">
+              <label for="gym">Gym</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-sm-column flex-md-row justify-content-end gap-3">
+        <button type="submit" value="draft" class="btn btn-secondary col-sm-12 col-md-2">
+          Save as Draft
+        </button>
+        <button type="submit" value="publish" class="btn btn-success col-sm-12 col-md-2">
+          Publish
+        </button>
+      </div>
+    </form>
+  </main>
+</body>
+</html>
