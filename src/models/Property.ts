@@ -29,6 +29,11 @@ const schema = new Schema({
     type: String,
     default: null
   },
+  yearBuilt: {
+    type: Number,
+    min: 1700,
+    default: null
+  },
   thumbnailUrl: {
     type: String,
     default: null
@@ -82,6 +87,10 @@ const schema = new Schema({
   totalRooms: {
     type: Number,
     required: true,
+    min: 0
+  },
+  totalMasterBedrooms: {
+    type: Number,
     min: 0
   },
   totalBathrooms: {

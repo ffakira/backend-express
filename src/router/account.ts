@@ -1,8 +1,11 @@
 import { Router, Request, Response } from 'express'
-import { verifyPassword, hashPassword } from '../utils'
+import { StatusCodes } from 'http-status-codes'
 import dayjs from 'dayjs'
 import dayjsPluginUTC from 'dayjs-plugin-utc'
+import { v4 as uuidv4 } from 'uuid'
+import { verifyPassword, hashPassword } from '../utils'
 import UserSchema from '../models/User'
+import TokenSchema from '../models/Token'
 
 dayjs.extend(dayjsPluginUTC)
 const router = Router()
@@ -14,9 +17,8 @@ router.get('/logout', async (req: Request, res: Response) => {
   res.redirect('/')
 })
 
-/** @TODO register not properly working */
 router.post('/register', async (req: Request, res: Response) => {
-  const { username, password, email } = req.body
+  const { username, password, email, firstName, lastName } = req.body
   if (!username || !password || !email) {
     req.session.errorMessage = JSON.stringify({
       error: {
@@ -31,32 +33,50 @@ router.post('/register', async (req: Request, res: Response) => {
   }
   req.session.errorMessage = undefined
   try {
-    const findUser = await UserSchema.findOne(
-      { $or: [{ username }, { email }] },
-      { username: 1, email: 1 }
-    )
-    if (!findUser) {
-      req.session.errorMessage = JSON.stringify({
-        error: {
-          username: 'Username already in use',
-          email: 'Email already in use',
-          data: { username, email }
-        }
-      })
-      res.redirect('/register')
-      return
-    }
     const hash = await hashPassword(password)
     const user = await new UserSchema({
       username,
+      firstName,
+      lastName,
       password: hash,
       email
     })
-    await user.save()
-    res.redirect('/')
+    const savedUser = await user.save()
+    const token = await new TokenSchema({
+      userId: savedUser._id,
+      token: uuidv4()
+    })
+    await token.save()
+    req.session.errorMessage = undefined
+    res.redirect('/successful')
   } catch (err) {
-    console.error(err)
+    if (err instanceof Error) {
+      if (err.message.includes('duplicate key error')) {
+        req.session.errorMessage = JSON.stringify({
+          error: {
+            username: {
+              username: 'Username already in use',
+              email: 'Email already in use',
+              data: { username, email }
+            }
+          }
+        })
+        res.redirect('/register')
+        return
+      }
+      if (
+        err.message.includes('password length cannot be less than 8 characters')
+      ) {
+        req.session.errorMessage = JSON.stringify({
+          error: {
+            password: 'Password length too short',
+            data: { username, email }
+          }
+        })
+      }
+    }
     res.redirect('/register')
+    return
   }
 })
 
@@ -101,7 +121,7 @@ router.post('/login', async (req: Request, res: Response) => {
     }
   } catch (err) {
     console.error(err)
-    res.redirect('/login')
+    res.redirect(StatusCodes.INTERNAL_SERVER_ERROR, '/login')
   }
 })
 

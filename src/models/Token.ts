@@ -23,5 +23,5 @@ const schema = new Schema({
   }
 })
 
-const ForgotToken = mongoose.model('ForgotToken', schema)
-export default ForgotToken
+const Token = mongoose.model('Token', schema)
+export default Token

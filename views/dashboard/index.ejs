@@ -15,61 +15,16 @@
         <label for="description" class="form-label fw-bold">Description</label>
         <input type="text" name="description" class="form-control" />
       </div>
-      <div class="mb-3">
-        <label for="reference" class="form-label fw-bold">Ref. ID</label>
-        <input type="text" name="text" class="form-control">
-      </div>
-      <div class="mb-3">
-        <label for="thumbnail" class="form-label fw-bold">Thumbnail</label>
-        <input class="form-control" type="file" accept="image/png, image/jpeg" />
-      </div>
-      <hr>
-      <h5 class="mb-4">Price Range</h5>
-      <div class="mb-3">
-        <div class="row">
-          <div class="col-4">
-            <label for="minPrice" class="form-label fw-bold">Min. Price</label>
-            <input type="number" class="form-control" min="0" step="10000" />
-          </div>
-          <div class="col-4">
-            <label for="maxPrice" class="form-label fw-bold">Max. Price</label>
-            <input type="number" class="form-control" min="0" step="10000" />
-          </div>
-          <div class="col-4">
-            <label for="currency" class="form-label fw-bold">Currency</label>
-            <select name="currency" id="currency" class="form-select">
-              <option value="brl">R$ (Reais)</option>
-              <option value="usd">USD (US dollar)</option>
-              <option value="eur">EUR (Euro)</option>
-            </select>
-          </div>
+      <div class="mb-3 row">
+        <div class="col-6">
+          <label for="reference" class="form-label fw-bold">Ref. ID</label>
+          <input type="text" name="text" class="form-control">
+        </div>
+        <div class="col-6">
+          <label for="yearBuilt" class="form-label fw-bold">Year built</label>
+          <input type="number" class="form-control" step="1" min="1950">
         </div>
       </div>
-      <hr>
-      <h5 class="mb-4">Location</h5>
-      <div class="mb-3">
-        <div class="row mb-3">
-          <div class="col-6">
-            <label for="provinceState" class="form-label fw-bold">Province / State</label>
-            <input type="text" name="provinceState" class="form-control">
-          </div>
-          <div class="col-6">
-            <label for="city" class="form-label fw-bold">City</label>
-            <input type="text" name="city" class="form-control" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
-            <label for="address" class="form-label fw-bold">Address</label>
-            <input type="text" name="address" class="form-control" />
-          </div>
-          <div class="col-6">
-            <label for="Zipcode" class="form-label fw-bold">Zipcode</label>
-            <input type="text" name="zipcode" class="form-control" />
-          </div>
-        </div>
-      </div>
-      <hr>
       <div class="mb-3">
         <div class="row">
           <div class="col-md-6 mb-3 mb-md-0">
@@ -108,16 +63,77 @@
         </div>
       </div>
       <div class="mb-3">
+        <label for="thumbnail" class="form-label fw-bold">Thumbnail</label>
+        <input class="form-control" type="file" accept="image/*" onchange="readURL(this);"/>
+        <img id="thumbnailImage" src="#" alt="">
+      </div>
+      <hr>
+      <h5 class="mb-4">Price Range</h5>
+      <div class="mb-3">
         <div class="row">
           <div class="col-4">
-            <label for="totalRooms" class="form-label fw-bold">Number of Rooms</label>
-            <input type="number" class="form-control" min="1" />
+            <label for="minPrice" class="form-label fw-bold">Min. Price</label>
+            <input type="number" class="form-control" min="0" step="10000" />
           </div>
           <div class="col-4">
+            <label for="maxPrice" class="form-label fw-bold">Max. Price</label>
+            <input type="number" class="form-control" min="0" step="10000" />
+          </div>
+          <div class="col-4">
+            <label for="currency" class="form-label fw-bold">Currency</label>
+            <select name="currency" id="currency" class="form-select">
+              <option value="brl">R$ (Reais)</option>
+              <option value="usd">USD (US dollar)</option>
+              <option value="eur">EUR (Euro)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <h5 class="mb-4">Location</h5>
+      <div class="mb-3">
+        <div class="mb-3">
+          <label for="country" class="form-label fw-bold">Country</label>
+          <input type="text" name="country" class="form-control"/>
+        </div>
+        <div class="row mb-3">
+          <div class="col-6">
+            <label for="provinceState" class="form-label fw-bold">Province / State</label>
+            <input type="text" name="provinceState" class="form-control">
+          </div>
+          <div class="col-6">
+            <label for="city" class="form-label fw-bold">City</label>
+            <input type="text" name="city" class="form-control" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <label for="address" class="form-label fw-bold">Address</label>
+            <input type="text" name="address" class="form-control" />
+          </div>
+          <div class="col-6">
+            <label for="Zipcode" class="form-label fw-bold">Zipcode</label>
+            <input type="text" name="zipcode" class="form-control" />
+          </div>
+        </div>
+      </div>
+      <hr>
+      <h5 class="mb-4">Characteristics</h5>
+      <div class="mb-3">
+        <div class="row">
+          <div class="col-3">
+            <label for="totalRooms" class="form-label fw-bold">Number of Bedrooms</label>
+            <input type="number" class="form-control" min="1" />
+          </div>
+          <div class="col-3">
+            <label for="totalMasterBedrooms" class="form-label fw-bold">Number of master bedrooms</label>
+            <input type="number" class="form-control" min="0">
+          </div>
+          <div class="col-3">
             <label for="totalBathrooms" class="form-label fw-bold">Number of Bathrooms</label>
             <input type="number" class="form-control" min="1">
           </div>
-          <div class="col-4">
+          <div class="col-3">
             <label for="totalFloors" class="form-label fw-bold">Total Floors</label>
             <input type="number" class="form-control" min="1" />
           </div>
@@ -139,6 +155,10 @@
               <input type="checkbox" class="form-check-input" name="facilities[]">
               <label for="gym">Gym</label>
             </div>
+            <div class="d-flex gap-2">
+              <input type="checkbox" class="form-check-input" name="facilities[]" value="Balcony">
+              <label for="balcony">Balcony</label>
+            </div>
           </div>
         </div>
       </div>
@@ -152,5 +172,19 @@
       </div>
     </form>
   </main>
+  <script>
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader()
+      const thumbnail = document.getElementById('thumbnailImage')
+
+      reader.onload = (e) => {
+          thumbnail.setAttribute('src', e.target.result)
+      }
+      reader.readAsDataURL(input.files[0])
+      thumbnail.style.width = "400px"
+    }
+  }
+  </script>
 </body>
 </html>
